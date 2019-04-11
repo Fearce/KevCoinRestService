@@ -91,7 +91,7 @@ namespace KevCoinRestService.Controllers
                     }
                     else
                     {
-                        transactions.Remove(transactions.First().Key);
+                        transactions.Remove(transactions.Last().Key);
                         transactions.Add(tx, block.Timestamp);
                     }
                 }
