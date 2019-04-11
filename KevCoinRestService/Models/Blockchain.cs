@@ -19,7 +19,7 @@ namespace KevCoinRestService.Models
             {
                 CreateGenesisBlock(),
             };
-            Difficulty = 2;
+            Difficulty = 1;
             PendingTransactions = new List<Transaction>();
             MiningReward = 100;
         }
@@ -34,19 +34,26 @@ namespace KevCoinRestService.Models
             return Chain.Last();
         }
 
+        private bool isMining = false;
+
         public void MinePendingTransactions(string miningRewardAddress)
         {
-            Transaction rewardTx = new Transaction(null, miningRewardAddress, MiningReward);
-            PendingTransactions.Add(rewardTx);
+            if (!isMining)
+            {
+                isMining = true;
+                Transaction rewardTx = new Transaction(null, miningRewardAddress, MiningReward);
+                PendingTransactions.Add(rewardTx);
 
-            // TO-DO limit amount of transactions   
-            Block block = new Block(DateTime.UtcNow.ToString("d"), PendingTransactions, GetLatestBlock().Hash);
-            block.MineBlock(Difficulty);
+                // TO-DO limit amount of transactions   
+                Block block = new Block(DateTime.UtcNow.ToString("d"), PendingTransactions, GetLatestBlock().Hash);
+                block.MineBlock(Difficulty);
 
-            Console.WriteLine("Block successfully mined");
-            Chain.Add(block);
+                Chain.Add(block);
 
-            PendingTransactions = new List<Transaction>();
+                PendingTransactions = new List<Transaction>();
+                isMining = false;
+            }
+
         }
 
         public void AddTransaction(Transaction transaction)
@@ -87,6 +94,8 @@ namespace KevCoinRestService.Models
 
             return balance;
         }
+
+
 
        public bool IsChainValid()
         {
