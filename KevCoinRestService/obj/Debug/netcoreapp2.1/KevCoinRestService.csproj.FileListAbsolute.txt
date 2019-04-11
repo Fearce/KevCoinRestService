@@ -1,0 +1,14 @@
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\bin\Debug\netcoreapp2.1\KevCoinRestService.deps.json
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\bin\Debug\netcoreapp2.1\KevCoinRestService.runtimeconfig.json
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\bin\Debug\netcoreapp2.1\KevCoinRestService.runtimeconfig.dev.json
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\bin\Debug\netcoreapp2.1\KevCoinRestService.dll
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\bin\Debug\netcoreapp2.1\KevCoinRestService.pdb
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\obj\Debug\netcoreapp2.1\KevCoinRestService.csprojAssemblyReference.cache
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\obj\Debug\netcoreapp2.1\KevCoinRestService.csproj.CoreCompileInputs.cache
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\obj\Debug\netcoreapp2.1\KevCoinRestService.RazorAssemblyInfo.cache
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\obj\Debug\netcoreapp2.1\KevCoinRestService.RazorAssemblyInfo.cs
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\obj\Debug\netcoreapp2.1\KevCoinRestService.AssemblyInfoInputs.cache
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\obj\Debug\netcoreapp2.1\KevCoinRestService.AssemblyInfo.cs
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\obj\Debug\netcoreapp2.1\KevCoinRestService.RazorTargetAssemblyInfo.cache
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\obj\Debug\netcoreapp2.1\KevCoinRestService.dll
+C:\Users\theke\source\repos\KevCoinRestService\KevCoinRestService\obj\Debug\netcoreapp2.1\KevCoinRestService.pdb
