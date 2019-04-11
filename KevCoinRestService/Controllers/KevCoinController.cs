@@ -70,7 +70,7 @@ namespace KevCoinRestService.Controllers
                          ". \n\nThe blockchain is valid: " + KevCoin.IsChainValid() +
                          "\n\nCheck your own balance with KevCoin/YourWallet, or try it with the above address" +
                          "\n\nGenerate a new wallet with KevCoin/GetKey" +
-                         "\n\nEach new wallet is assigned with 50 free tokens from the test account." +
+                         "\n\nEach new wallet is assigned with 50 free coins from the test account." +
                          "\n\nSend tokens with KevCoin/FromAddress/ToAddress/Amount/PrivateKey" +
                          "\n\nMine pending transactions with KevCoin/Mine/YourWallet" +
                          "\n\n\nRecent Transactions: \n";
@@ -105,11 +105,19 @@ namespace KevCoinRestService.Controllers
         public string SendTransaction(string fromAddress, string toAddress, decimal amount, string privateKey)
         {
             string msg = $"";
-            Transaction tx = new Transaction(fromAddress,toAddress,amount);
-            tx.SignTransaction(new Key(privateKey));
-            KevCoin.AddTransaction(tx);
-            msg += $"Transaction added to pending transactions and successfully signed." +
-                   $"\nTransaction details: \nFrom Address: {fromAddress}.\nTo Address: {toAddress}.\n Amount: {amount}.";
+            if (KevCoin.GetBalanceOfAddress(fromAddress) >= amount)
+            {
+                Transaction tx = new Transaction(fromAddress, toAddress, amount);
+                tx.SignTransaction(new Key(privateKey));
+                KevCoin.AddTransaction(tx);
+                msg += $"Transaction added to pending transactions and successfully signed." +
+                       $"\nTransaction details: \nFrom Address: {fromAddress}.\nTo Address: {toAddress}.\n Amount: {amount}.";
+            }
+            else
+            {
+                msg += $"Transaction declined due to lack of funds." +
+                       $"\nAddress: {fromAddress}.\nBalance: {KevCoin.GetBalanceOfAddress(fromAddress)}.\nRequested amount to be transferred: {amount}";
+            }
             return msg;
         }
 
@@ -123,7 +131,8 @@ namespace KevCoinRestService.Controllers
         [HttpGet]
         public string MineTransactions(string walletAddress)
         {
-            string msg = $"Pending transactions successfully mined.";
+            string msg = $"Pending transactions successfully mined." +
+                         $"\nWallet {walletAddress}\n rewarded with {KevCoin.MiningReward} coins.";
             KevCoin.MinePendingTransactions(walletAddress);
             return msg;
         }
