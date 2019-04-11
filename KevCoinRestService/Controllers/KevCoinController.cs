@@ -80,14 +80,26 @@ namespace KevCoinRestService.Controllers
                          "\n\nSend coins with KevCoin/SenderPublicKey/ReceiverPublicKey/Amount/SenderPrivateKey" +
                          "\n\nMine pending transactions with KevCoin/Mine/PublicKey" +
                          "\n\n\nPast 50 Transactions:";
-            var blocks = (from b in KevCoin.Chain select b).Take(50);
-
-            foreach (var block in blocks)
+            Dictionary<Transaction,string> transactions = new Dictionary<Transaction,string>();
+            foreach (var block in KevCoin.Chain)
             {
                 foreach (var tx in block.Transactions)
                 {
-                    msg += "\n" + block.Timestamp + " " + tx.ToString();
+                    if (transactions.Count < 50)
+                    {
+                        transactions.Add(tx,block.Timestamp);
+                    }
+                    else
+                    {
+                        transactions.Remove(transactions.First().Key);
+                        transactions.Add(tx, block.Timestamp);
+                    }
                 }
+            }
+
+            foreach (var tx in transactions)
+            {
+                msg += "\n" + tx.Value + " " + tx.Key.ToString();
             }
 
             return msg;
