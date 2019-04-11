@@ -19,7 +19,7 @@ namespace KevCoinRestService.Controllers
 
         private Blockchain KevCoin = Program.KevCoin;
 
-        
+
 
 
 
@@ -64,15 +64,15 @@ namespace KevCoinRestService.Controllers
                          "\n\nEach new wallet is assigned with 50 free coins from the test account." +
                          "\n\nSend coins with KevCoin/SenderPublicKey/ReceiverPublicKey/Amount/SenderPrivateKey" +
                          "\n\nMine pending transactions with KevCoin/Mine/PublicKey" +
-                         "\n\n\nPast 50 Transactions:";
-            Dictionary<Transaction,string> transactions = new Dictionary<Transaction,string>();
+                         "\n\n\nPast 50 Transactions (Amount : sender : receiver):";
+            Dictionary<Transaction, string> transactions = new Dictionary<Transaction, string>();
             foreach (var block in KevCoin.Chain)
             {
                 foreach (var tx in block.Transactions)
                 {
                     if (transactions.Count < 50)
                     {
-                        transactions.Add(tx,block.Timestamp);
+                        transactions.Add(tx, block.Timestamp);
                     }
                     else
                     {
@@ -131,7 +131,7 @@ namespace KevCoinRestService.Controllers
             if (KevCoin.GetBalanceOfAddress(fromAddress) >= amount)
             {
                 Transaction tx = new Transaction(fromAddress, toAddress, amount);
-                tx.SignTransaction(new Key(){PrivateKey = privateKey,PublicKey = fromAddress});
+                tx.SignTransaction(new Key() { PrivateKey = privateKey, PublicKey = fromAddress });
                 KevCoin.AddTransaction(tx);
                 msg += $"Transaction added to pending transactions and successfully signed." +
                        $"\nTransaction details: \nFrom Address: {fromAddress}.\nTo Address: {toAddress}.\n Amount: {amount}.";
@@ -168,7 +168,7 @@ namespace KevCoinRestService.Controllers
             return msg;
         }
 
-       
+
 
 
         // POST: api/KevCoin
