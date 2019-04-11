@@ -37,8 +37,10 @@ namespace KevCoinRestService.Controllers
             Transaction tx = new Transaction(TestWalletAddress, key.PublicKey, 50);
             tx.SignTransaction(new Key(TestKey));
             KevCoin.AddTransaction(tx);
-            KevCoin.MinePendingTransactions(TestWalletAddress);
-            return key.ToString();
+           // KevCoin.MinePendingTransactions(TestWalletAddress);
+            return $"Private key: {key.PrivateKey}" +
+                   $"Public key : {key.PublicKey}" +
+                   $"Your mining reward of 50 coins is added to pending transactions.";
         }
 
         /// <summary>
@@ -68,13 +70,19 @@ namespace KevCoinRestService.Controllers
                          "\n\nThe address of the test account is: 3C605877EE1269829B531EA5EAC374D1A78CE9B1B18930C33F88A4053ECA383E0909199B8D8AA537E2F92F09AA84F624D9A1181AB55C556AA1083930CAF9C1186 by visiting this page." +
                          "\nThe balance of the account is: " + KevCoin.GetBalanceOfAddress(TestWalletAddress) +
                          ". \n\nThe blockchain is valid: " + KevCoin.IsChainValid() +
-                         "\n\nCheck your own balance with KevCoin/YourWallet, or try it with the above address" +
-                         "\n\nGenerate a new wallet with KevCoin/GetKey" +
+                         "\n\nCheck your own balance with KevCoin/PublicKey, or try it with the above address" +
+                         "\n\nGenerate a new wallet with KevCoin/GetKey, remember to save your keys somewhere." +
                          "\n\nEach new wallet is assigned with 50 free coins from the test account." +
-                         "\n\nSend tokens with KevCoin/FromAddress/ToAddress/Amount/PrivateKey" +
-                         "\n\nMine pending transactions with KevCoin/Mine/YourWallet" +
-                         "\n\n\nRecent Transactions: \n";
-
+                         "\n\nSend coins with KevCoin/SenderPublicKey/ReceiverPublicKey/Amount/SenderPrivateKey" +
+                         "\n\nMine pending transactions with KevCoin/Mine/PublicKey" +
+                         "\n\n\nRecent Transactions:";
+            foreach (var block in KevCoin.Chain)
+            {
+                foreach (var tx in block.Transactions)
+                {
+                    msg += "\n" + tx.ToString();
+                }
+            }
 
             return msg;
         }
@@ -89,6 +97,18 @@ namespace KevCoinRestService.Controllers
         public decimal GetBalance(string key)
         {
             return KevCoin.GetBalanceOfAddress(key);
+        }
+
+        /// <summary>
+        /// Testing method to reset the blockchain if it is invalid
+        /// </summary>
+        /// <returns></returns>
+        [Route("Resetchain")]
+        [HttpGet]
+        public string ResetBlockchain()
+        {
+            Program.KevCoin = new Blockchain();
+            return "Blockchain reset.";
         }
 
         /// <summary>
@@ -131,7 +151,7 @@ namespace KevCoinRestService.Controllers
         [HttpGet]
         public string MineTransactions(string walletAddress)
         {
-            string msg = $"Pending transactions successfully mined." +
+            string msg = $"{KevCoin.PendingTransactions.Count} pending transactions successfully mined." +
                          $"\nWallet {walletAddress}\n rewarded with {KevCoin.MiningReward} coins.";
             KevCoin.MinePendingTransactions(walletAddress);
             return msg;
