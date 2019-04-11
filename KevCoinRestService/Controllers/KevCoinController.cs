@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -13,10 +14,14 @@ namespace KevCoinRestService.Controllers
     [ApiController]
     public class KevCoinController : ControllerBase
     {
+        private static string TestKey = "34ce346728813839fbfa307ce520006c56044714aa548929850f9d8a784133c1";
+        private static string TestWalletAddress = Key.GetPublicKeyFromPrivateKey(TestKey);
+
         Blockchain KevCoin = new Blockchain();
 
-        private static string myKey ="34ce346728813839fbfa307ce520006c56044714aa548929850f9d8a784133c1";
-        private string myWalletAddress = Key.GetPublicKeyFromPrivateKey(myKey);
+        
+
+
 
         /// <summary>
         /// Generates a random private & public key for you to use as a wallet.
@@ -35,14 +40,27 @@ namespace KevCoinRestService.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { myKey, myWalletAddress };
+            Debug.WriteLine("Is chain valid? " + KevCoin.IsChainValid());
+            Transaction tx1 = new Transaction(TestWalletAddress, "test", 10);
+            Debug.WriteLine("Wallet address: " + TestWalletAddress);
+            tx1.SignTransaction(new Key(TestKey));
+            KevCoin.AddTransaction(tx1);
+
+            Debug.WriteLine("Starting the miner");
+            KevCoin.MinePendingTransactions(TestWalletAddress);
+
+            Debug.WriteLine("Balance of wallet is : " + KevCoin.GetBalanceOfAddress(TestWalletAddress));
+
+            Debug.WriteLine("Is chain valid? " + KevCoin.IsChainValid());
+
+            return new string[] { "Get test wip" };
         }
 
-        // GET: api/KevCoin/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        // GET: api/KevCoin/Address
+        [HttpGet("{key}", Name = "Balance")]
+        public string GetBalance(string key)
         {
-            return "value";
+            return KevCoin.GetBalanceOfAddress(key).ToString("C");
         }
 
         // POST: api/KevCoin

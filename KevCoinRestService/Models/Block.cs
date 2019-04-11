@@ -35,7 +35,7 @@ namespace KevCoinRestService.Models
         public void MineBlock(int difficulty)
         {
             string zeros = "";
-            for (int i = 0; i <= difficulty; i++)
+            for (int i = 0; i < difficulty; i++)
             {
                 zeros += "0";
             }

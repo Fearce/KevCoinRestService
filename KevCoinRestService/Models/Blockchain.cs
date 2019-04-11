@@ -19,7 +19,7 @@ namespace KevCoinRestService.Models
             {
                 CreateGenesisBlock(),
             };
-            Difficulty = 3;
+            Difficulty = 2;
             PendingTransactions = new List<Transaction>();
             MiningReward = 100;
         }
@@ -34,7 +34,7 @@ namespace KevCoinRestService.Models
             return Chain.Last();
         }
 
-        void MinePendingTransactions(string miningRewardAddress)
+        public void MinePendingTransactions(string miningRewardAddress)
         {
             Transaction rewardTx = new Transaction(null, miningRewardAddress, MiningReward);
             PendingTransactions.Add(rewardTx);
@@ -49,7 +49,7 @@ namespace KevCoinRestService.Models
             PendingTransactions = new List<Transaction>();
         }
 
-        void AddTransaction(Transaction transaction)
+        public void AddTransaction(Transaction transaction)
         {
             if (string.IsNullOrEmpty(transaction.FromAddress) || string.IsNullOrEmpty(transaction.ToAddress))
             {
@@ -64,7 +64,7 @@ namespace KevCoinRestService.Models
             PendingTransactions.Add(transaction);
         }
 
-        decimal GetBalanceOfAddress(string address)
+       public decimal GetBalanceOfAddress(string address)
         {
             decimal balance = 0;
 
@@ -72,11 +72,12 @@ namespace KevCoinRestService.Models
             {
                 foreach (var trans in block.Transactions)
                 {
+                    // if the address has sent detract from balance
                     if (trans.FromAddress == address)
                     {
                         balance -= trans.Amount;
                     }
-
+                    // if receiver add to balance
                     if (trans.ToAddress == address)
                     {
                         balance += trans.Amount;
@@ -87,7 +88,7 @@ namespace KevCoinRestService.Models
             return balance;
         }
 
-        bool IsChainValid()
+       public bool IsChainValid()
         {
             for (int i = 1; i < Chain.Count; i++)
             {

@@ -35,22 +35,10 @@ namespace KevCoinRestService.Models
                 throw new Exception("You cannot sign transactions for other wallets!");
             }
 
-            var hashTx = HashGenerator.CalculateHash(FromAddress + ToAddress + Amount);
-
-            var curve = SecNamedCurves.GetByName("secp256k1");
-            var domain = new ECDomainParameters(curve.Curve, curve.G, curve.N, curve.H);
-
-            var keyParameters = new
-                ECPrivateKeyParameters(new Org.BouncyCastle.Math.BigInteger(signingKey.PrivateKey),
-                    domain);
-
-            ISigner signer = SignerUtilities.GetSigner("SHA-256withECDSA");
-
-            signer.Init(true, keyParameters);
-            signer.BlockUpdate(Encoding.ASCII.GetBytes(hashTx), 0, hashTx.Length);
-            var signature = signer.GenerateSignature();
-            Signature = Base58Encoding.Encode(signature);
+            var hashTx = HashGenerator.CalculateHash(FromAddress + ToAddress + Amount + signingKey.PublicKey);
+            Signature = hashTx;
         }
+
 
         public bool IsValid()
         {
@@ -59,25 +47,9 @@ namespace KevCoinRestService.Models
             if (string.IsNullOrEmpty(Signature) || Signature.Length == 0)
                 throw new Exception("No signature in this transaction");
 
-            var curve = SecNamedCurves.GetByName("secp256k1");
-            var domain = new ECDomainParameters(curve.Curve, curve.G, curve.N, curve.H);
+            var hashTx = HashGenerator.CalculateHash(FromAddress + ToAddress + Amount + FromAddress);
 
-            var publicKeyBytes = Base58Encoding.Decode(FromAddress);
-
-            var q = curve.Curve.DecodePoint(publicKeyBytes);
-
-            var keyParameters = new
-                Org.BouncyCastle.Crypto.Parameters.ECPublicKeyParameters(q,
-                    domain);
-
-            ISigner signer = SignerUtilities.GetSigner("SHA-256withECDSA");
-            var hashTx = HashGenerator.CalculateHash(FromAddress + ToAddress + Amount);
-            signer.Init(false, keyParameters);
-            signer.BlockUpdate(Encoding.ASCII.GetBytes(hashTx), 0, hashTx.Length);
-
-            var signatureBytes = Base58Encoding.Decode(Signature);
-
-            return signer.VerifySignature(signatureBytes);
+            return hashTx == Signature;
         }
 
         public override string ToString()
