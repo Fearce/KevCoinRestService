@@ -11,8 +11,11 @@ namespace KevCoinRestService.Models
     {
         public string PrivateKey { get; set; }
         public string PublicKey { get; set; }
-    
-        
+
+        public Key()
+        {
+            
+        }
 
         public Key(string privateKey)
         {

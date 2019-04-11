@@ -132,7 +132,7 @@ namespace KevCoinRestService.Controllers
             if (KevCoin.GetBalanceOfAddress(fromAddress) >= amount)
             {
                 Transaction tx = new Transaction(fromAddress, toAddress, amount);
-                tx.SignTransaction(new Key(privateKey));
+                tx.SignTransaction(new Key(){PrivateKey = privateKey,PublicKey = fromAddress});
                 KevCoin.AddTransaction(tx);
                 msg += $"Transaction added to pending transactions and successfully signed." +
                        $"\nTransaction details: \nFrom Address: {fromAddress}.\nTo Address: {toAddress}.\n Amount: {amount}.";
