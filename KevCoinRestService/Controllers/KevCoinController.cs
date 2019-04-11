@@ -34,13 +34,17 @@ namespace KevCoinRestService.Controllers
             var rsa = new RSACryptoServiceProvider(1024);
             RSAParameters parameters = rsa.ExportParameters(true);
             Key key = new Key(HashGenerator.CalculateHash(Convert.ToBase64String(parameters.D)));
+            key.PublicKey =
+                HashGenerator.CalculateHash(key.PrivateKey + parameters.D + parameters.DP + parameters.DQ +
+                                            parameters.Exponent);
             Transaction tx = new Transaction(TestWalletAddress, key.PublicKey, 50);
             tx.SignTransaction(new Key(TestKey));
             KevCoin.AddTransaction(tx);
-           // KevCoin.MinePendingTransactions(TestWalletAddress);
+            // KevCoin.MinePendingTransactions(TestWalletAddress);
             return $"Private key: {key.PrivateKey}" +
-                   $"Public key : {key.PublicKey}" +
-                   $"Your mining reward of 50 coins is added to pending transactions.";
+                   $"\nPublic key: {key.PublicKey}" +
+                   $"\nYour mining reward of 50 coins is added to pending transactions.";
+
         }
 
         /// <summary>

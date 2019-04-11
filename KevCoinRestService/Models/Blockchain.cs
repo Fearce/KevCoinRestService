@@ -19,7 +19,7 @@ namespace KevCoinRestService.Models
             {
                 CreateGenesisBlock(),
             };
-            Difficulty = 1;
+            Difficulty = 3;
             PendingTransactions = new List<Transaction>();
             MiningReward = 100;
         }
@@ -47,7 +47,6 @@ namespace KevCoinRestService.Models
                 // TO-DO limit amount of transactions   
                 Block block = new Block(DateTime.UtcNow.ToString("d"), PendingTransactions, GetLatestBlock().Hash);
                 block.MineBlock(Difficulty);
-
                 Chain.Add(block);
 
                 PendingTransactions = new List<Transaction>();
