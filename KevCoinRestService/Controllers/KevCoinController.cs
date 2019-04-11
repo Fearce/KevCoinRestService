@@ -44,7 +44,7 @@ namespace KevCoinRestService.Controllers
             // KevCoin.MinePendingTransactions(TestWalletAddress);
             return $"Private key: {key.PrivateKey}" +
                    $"\nPublic key: {key.PublicKey}" +
-                   $"\nYour mining reward of 50 coins is added to pending transactions.";
+                   $"\nYour free reward of 50 coins is added to pending transactions.";
         }
 
         /// <summary>
