@@ -27,8 +27,9 @@ namespace KevCoinRestService.Controllers
         /// Generates a random private & public key for you to use as a wallet.
         /// </summary>
         /// <returns></returns>
-        // GET: api/KevCoin/GetCoin
-        [HttpGet("GetKey")]
+        // GET: api/KevCoin/Getkey
+        [Route("Getkey")]
+        [HttpGet]
         public string GetKey()
         {
             var rsa = new RSACryptoServiceProvider(1024);
@@ -38,13 +39,12 @@ namespace KevCoinRestService.Controllers
                 HashGenerator.CalculateHash(key.PrivateKey + parameters.D + parameters.DP + parameters.DQ +
                                             parameters.Exponent);
             Transaction tx = new Transaction(TestWalletAddress, key.PublicKey, 50);
-            tx.SignTransaction(new Key(TestKey));
+            tx.SignTransaction(new Key() { PrivateKey = TestKey, PublicKey = TestWalletAddress });
             KevCoin.AddTransaction(tx);
             // KevCoin.MinePendingTransactions(TestWalletAddress);
             return $"Private key: {key.PrivateKey}" +
                    $"\nPublic key: {key.PublicKey}" +
                    $"\nYour mining reward of 50 coins is added to pending transactions.";
-
         }
 
         /// <summary>
@@ -55,21 +55,6 @@ namespace KevCoinRestService.Controllers
         [HttpGet]
         public string Get()
         {
-            //Debug.WriteLine("Is chain valid? " + KevCoin.IsChainValid());
-            //Transaction tx1 = new Transaction(TestWalletAddress, "test", 10);
-            //Debug.WriteLine("Wallet address: " + TestWalletAddress);
-            //tx1.SignTransaction(new Key(TestKey));
-            //KevCoin.AddTransaction(tx1);
-
-            //Debug.WriteLine("Starting the miner");
-            //KevCoin.MinePendingTransactions(TestWalletAddress);
-
-            //Debug.WriteLine("Balance of wallet is : " + KevCoin.GetBalanceOfAddress(TestWalletAddress));
-
-            // KevCoin.Chain[1].Transactions[0].Amount = 1;
-
-            //Debug.WriteLine("Is chain valid? " + KevCoin.IsChainValid());
-
             string msg = "Welcome to KevCoin. " +
                          "\n\nThe address of the test account is: 2565e62e2255157fbc54dcd3087bd02fffd8bc98ad950ec67d3f916b51648cef." +
                          "\nThe balance of the test account is: " + KevCoin.GetBalanceOfAddress(TestWalletAddress) +
