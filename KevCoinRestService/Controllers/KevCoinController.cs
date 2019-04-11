@@ -14,8 +14,8 @@ namespace KevCoinRestService.Controllers
     [ApiController]
     public class KevCoinController : ControllerBase
     {
-        private static string TestKey = "34ce346728813839fbfa307ce520006c56044714aa548929850f9d8a784133c1";
-        private static string TestWalletAddress = Key.GetPublicKeyFromPrivateKey(TestKey);
+        private static string TestKey = "3577c85d2e422f61d9c9d26f2a5b836c9ac9b0b1e77857e1ef9ae062fe3247db";
+        private static string TestWalletAddress = "2565e62e2255157fbc54dcd3087bd02fffd8bc98ad950ec67d3f916b51648cef";
 
         private Blockchain KevCoin = Program.KevCoin;
 
@@ -71,8 +71,8 @@ namespace KevCoinRestService.Controllers
             //Debug.WriteLine("Is chain valid? " + KevCoin.IsChainValid());
 
             string msg = "Welcome to KevCoin. " +
-                         "\n\nThe address of the test account is: 3C605877EE1269829B531EA5EAC374D1A78CE9B1B18930C33F88A4053ECA383E0909199B8D8AA537E2F92F09AA84F624D9A1181AB55C556AA1083930CAF9C1186 by visiting this page." +
-                         "\nThe balance of the account is: " + KevCoin.GetBalanceOfAddress(TestWalletAddress) +
+                         "\n\nThe address of the test account is: 2565e62e2255157fbc54dcd3087bd02fffd8bc98ad950ec67d3f916b51648cef." +
+                         "\nThe balance of the test account is: " + KevCoin.GetBalanceOfAddress(TestWalletAddress) +
                          ". \n\nThe blockchain is valid: " + KevCoin.IsChainValid() +
                          "\n\nCheck your own balance with KevCoin/PublicKey, or try it with the above address" +
                          "\n\nGenerate a new wallet with KevCoin/GetKey, remember to save your keys somewhere." +
