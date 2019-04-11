@@ -26,7 +26,7 @@ namespace KevCoinRestService.Models
 
         private Block CreateGenesisBlock()
         {
-            return new Block(DateTime.UtcNow.ToString("d"),new List<Transaction>(),"0" );
+            return new Block(DateTime.UtcNow.ToString("g"),new List<Transaction>(),"0" );
         }
 
         public Block GetLatestBlock()

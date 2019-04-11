@@ -79,12 +79,14 @@ namespace KevCoinRestService.Controllers
                          "\n\nEach new wallet is assigned with 50 free coins from the test account." +
                          "\n\nSend coins with KevCoin/SenderPublicKey/ReceiverPublicKey/Amount/SenderPrivateKey" +
                          "\n\nMine pending transactions with KevCoin/Mine/PublicKey" +
-                         "\n\n\nRecent Transactions:";
-            foreach (var block in KevCoin.Chain)
+                         "\n\n\nPast 50 Transactions:";
+            var blocks = (from b in KevCoin.Chain select b).Take(50);
+
+            foreach (var block in blocks)
             {
                 foreach (var tx in block.Transactions)
                 {
-                    msg += "\n" + tx.ToString();
+                    msg += "\n" + block.Timestamp + " " + tx.ToString();
                 }
             }
 
