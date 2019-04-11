@@ -18,29 +18,16 @@ namespace KevCoinRestService.Controllers
         private static string myKey ="34ce346728813839fbfa307ce520006c56044714aa548929850f9d8a784133c1";
         private string myWalletAddress = Key.GetPublicKeyFromPrivateKey(myKey);
 
+        /// <summary>
+        /// Generates a random private & public key for you to use as a wallet.
+        /// </summary>
+        /// <returns></returns>
         // GET: api/KevCoin/GetCoin
         [HttpGet("GetKey")]
         public string GetKey()
         {
             var rsa = new RSACryptoServiceProvider(1024);
-
-            return ToXmlString(rsa);
-
-        }
-
-        public static string ToXmlString(RSACryptoServiceProvider rsa)
-        {
             RSAParameters parameters = rsa.ExportParameters(true);
-
-            //string keys = string.Format("<RSAKeyValue><Modulus>{0}</Modulus><Exponent>{1}</Exponent><P>{2}</P><Q>{3}</Q><DP>{4}</DP><DQ>{5}</DQ><InverseQ>{6}</InverseQ><D>{7}</D></RSAKeyValue>",
-            //    Convert.ToBase64String(parameters.Modulus),
-            //    Convert.ToBase64String(parameters.Exponent),
-            //    Convert.ToBase64String(parameters.P),
-            //    Convert.ToBase64String(parameters.Q),
-            //    Convert.ToBase64String(parameters.DP),
-            //    Convert.ToBase64String(parameters.DQ),
-            //    Convert.ToBase64String(parameters.InverseQ),
-            //    Convert.ToBase64String(parameters.D));
             return new Key(HashGenerator.CalculateHash(Convert.ToBase64String(parameters.D))).ToString();
         }
 
