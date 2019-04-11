@@ -151,9 +151,17 @@ namespace KevCoinRestService.Controllers
         [HttpGet]
         public string MineTransactions(string walletAddress)
         {
-            string msg = $"{KevCoin.PendingTransactions.Count} pending transactions successfully mined." +
-                         $"\nWallet {walletAddress}\n rewarded with {KevCoin.MiningReward} coins.";
-            KevCoin.MinePendingTransactions(walletAddress);
+            string msg = "";
+            if (KevCoin.PendingTransactions.Count < 1)
+            {
+                msg = "No transactions to mine.";
+            }
+            else
+            {
+                msg = $"{KevCoin.PendingTransactions.Count} pending transactions successfully mined." +
+                      $"\nWallet {walletAddress}\n rewarded with {KevCoin.MiningReward} coins.";
+                KevCoin.MinePendingTransactions(walletAddress);
+            }
             return msg;
         }
 
