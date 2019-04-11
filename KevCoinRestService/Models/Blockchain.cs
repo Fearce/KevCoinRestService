@@ -45,7 +45,7 @@ namespace KevCoinRestService.Models
                 PendingTransactions.Add(rewardTx);
 
                 // TO-DO limit amount of transactions   
-                Block block = new Block(DateTime.UtcNow.ToString("d"), PendingTransactions, GetLatestBlock().Hash);
+                Block block = new Block(DateTime.UtcNow.ToString("g"), PendingTransactions, GetLatestBlock().Hash);
                 block.MineBlock(Difficulty);
                 Chain.Add(block);
 
